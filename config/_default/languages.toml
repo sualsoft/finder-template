@@ -1,0 +1,9 @@
+#################### default parameters ################################
+[languages]
+[languages.en]
+languageName = "English"
+weight = 1
+    
+[languages.tha]
+languageName = "ไทย"
+weight = 2

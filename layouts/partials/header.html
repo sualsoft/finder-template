@@ -1,0 +1,76 @@
+{{ "<!-- navigation -->" | safeHTML }}
+<header
+  class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+  data-scroll-header
+>
+  <div class="container">
+    <a class="navbar-brand me-3 me-xl-4" href="{{ site.BaseURL | absLangURL }}"
+      ><img
+        class="d-block"
+        src="/img/logo/logo-dark.svg"
+        width="116"
+        alt="Finder"
+    /></a>
+
+    <!---->
+
+    <button
+      class="navbar-toggler ms-auto"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span></button
+    ><a
+      class="btn btn-sm text-primary d-none d-lg-block order-lg-3"
+      href="#signin-modal"
+      data-bs-toggle="modal"
+      ><i class="fi-user me-2"></i>Sign in</a
+    >
+    <!---->
+
+    <div class="lng order-lg-3">
+      <a class="btn btn-primary btn-sm rounded-pill ms-2" href="/tha"
+        ><i class="fi-plus me-2"></i>ไทย<span class="d-none d-sm-inline">
+        </span>
+      </a>
+      <a class="btn btn-primary btn-sm rounded-pill ms-2" href="/"
+        ><i class="fi-plus me-2"></i>English<span class="d-none d-sm-inline">
+        </span>
+      </a>
+    </div>
+    <!---->
+
+    <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
+      <ul class="navbar-nav navbar-nav-scroll" style="max-height: 35rem">
+        <!-- Demos switcher-->
+        {{- $currentPage := . -}}
+        <!---->
+        {{ range .Site.Menus.main }}
+        <!-- Menu items-->
+        <li
+          class='nav-item {{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}'
+        >
+          <a
+            class="nav-link"
+            href="{{ .URL | absLangURL }}"
+            role="button"
+            aria-expanded="false"
+            >{{ .Name }}</a
+          >
+        </li>
+        {{- end }}
+
+        <li class="nav-item d-lg-none">
+          <a class="nav-link" href="#signin-modal" data-bs-toggle="modal"
+            ><i class="fi-user me-2"></i>Sign in</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+{{ "<!-- /navigation -->" | safeHTML }}
