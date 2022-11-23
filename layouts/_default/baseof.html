@@ -169,17 +169,25 @@
               business</span
             ></a
           >
-          {{ if .IsTranslated }} {{ range .Translations }}
+          {{ if .IsTranslated }}
+          <!---->
+          {{ range .Translations }}
           <a
             class="button is-small is-danger is-rounded"
             href="{{ .Permalink }}"
             >{{ .Site.Language.LanguageName }}</a
           >
-          {{ end }} {{ else }} {{ if eq .Site.Language.Lang "en" }}
+          {{ end }}
+          <!---->
+          {{ else }}
+          <!---->
+          {{ if eq .Site.Language.Lang "en" }}
           <a class="button is-small is-danger is-rounded" href="/">日本語</a>
           {{ else }}
           <a class="button is-small is-danger is-rounded" href="/">English</a>
-          {{ end }} {{ end }}
+          {{ end }}
+          <!---->
+          {{ end }}
           <!---->
           <!---->
           <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
@@ -187,7 +195,7 @@
               <!-- Demos switcher-->
               {{- $currentPage := . -}}
               <!---->
-              {{ range .Site.Menus.main -}}
+              {{ range .Site.Menus.main }}
               <!-- Menu items-->
               <li
                 class='nav-item {{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}'
