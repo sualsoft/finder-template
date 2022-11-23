@@ -1,0 +1,224 @@
+{{define "main"}}
+<!-- Page container-->
+<div class="container mt-5 mb-5 py-5">
+  <!-- Breadcrumb-->
+  <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Blog</li>
+    </ol>
+  </nav>
+  <h1 class="mb-4">{{.Title}}</h1>
+  <!-- Sponsored posts-->
+  <div class="row gy-4 mb-md-5 mb-4 pb-md-5 pb-4 border-bottom">
+    <!-- Article-->
+    {{ range where .Pages "Type" "sponsor" }}
+    <article class="col-md-6 pb-2 pb-md-0">
+      <div class="card border-0 h-100">
+        <a class="d-block position-relative mb-3" href="{{.Permalink}}"
+          ><span
+            class="badge bg-success position-absolute top-0 end-0 m-3 fs-sm"
+            >Sponsored</span
+          >
+          {{ with .Params.blog_details}}
+          <img class="rounded-3" src="{{.image}}" alt="Post image" />
+          {{end}}
+        </a>
+        <div class="card-body p-0">
+          {{ range .Params.categories }}
+          <a
+            class="fs-sm text-uppercase text-decoration-none"
+            href="/categories/{{ . | urlize}}"
+            >{{.}}</a
+          >
+          {{end}}
+          <h2 class="h5 pt-1 mb-2">
+            <a class="nav-link" href="{{.Permalink}}">{{.Title}}</a>
+          </h2>
+          <p class="mb-md-4 text-muted">{{.Summary}}</p>
+        </div>
+        <div class="card-footer p-0 border-top-0">
+          <a
+            class="d-flex align-items-center text-decoration-none position-relative zindex-5"
+          >
+            {{ with .Params.blog_details}}
+            <img
+              class="rounded-circle"
+              src="{{.author_image}}"
+              width="48"
+              alt="Avatar"
+            />
+
+            <div class="ps-2">
+              <h6 class="fs-sm text-nav lh-base mb-1">{{.author}}</h6>
+              {{end}}
+              <div class="d-flex text-body fs-xs">
+                <span class="me-2 pe-1"
+                  ><i
+                    class="fi-calendar-alt opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >{{ .Date.Format "Mon, Jan 2, " }}</span
+                ><span
+                  ><i
+                    class="fi-chat-circle opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >{{ with .Params.blog_details}}{{.comments}}{{end}}
+                  comments</span
+                >
+              </div>
+            </div></a
+          >
+        </div>
+      </div>
+    </article>
+    {{end}}
+    <!-- /Article-->
+  </div>
+  <!-- List of posts + Sidebar-->
+  <div class="row">
+    <!-- Sidebar (offcanvas)-->
+    <aside class="col-lg-3">
+      <div
+        class="offcanvas offcanvas-start offcanvas-collapse"
+        id="blog-sidebar"
+      >
+        <div class="offcanvas-header shadow-sm mb-2">
+          <h2 class="h5 offcanvas-title">Sidebar</h2>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="offcanvas"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- Search-->
+          {{ partial "search-form.html"}}
+          <!-- Categories-->
+          <div class="card card-flush pb-2 pb-lg-0 mb-4">
+            <div class="card-body">
+              <h3 class="h5">Categories</h3>
+              {{range ($.Site.GetPage "taxonomyTerm" "categories").Pages }}
+              <a
+                class="nav-link mb-2 p-0 fw-normal d-flex justify-content-between"
+                href="{{.Permalink | absLangURL}}"
+                >{{.Title}}<span class="opacity-70"></span
+              ></a>
+              {{end}}
+            </div>
+          </div>
+          <!-- Tags-->
+          <div class="card card-flush pb-2 pb-lg-0 mb-4">
+            <div class="card-body">
+              <h4 class="h5">Popular Tags</h4>
+              <div class="d-flex flex-wrap mb-n1">
+                {{range ($.Site.GetPage "taxonomyTerm" "tags").Pages }}
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  <a href="{{.Permalink | absLangURL}}">{{.Title}}</a>
+                </button>
+                {{end}}
+              </div>
+            </div>
+          </div>
+          <!-- Subscribe-->
+          <div class="card card-flush mb-4">
+            <div class="card-body">
+              <h4 class="h5 mb-3">Stay Informed</h4>
+              <p class="fs-sm mb-3">
+                Subscribe to our newsletter and be the first to see the latest
+                news and advice.
+              </p>
+              <form class="form-group rounded-pill">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text text-muted"
+                    ><i class="fi-mail"></i
+                  ></span>
+                  <input
+                    class="form-control"
+                    type="email"
+                    placeholder="Your email"
+                  />
+                </div>
+                <button
+                  class="btn btn-primary btn-sm rounded-pill"
+                  type="button"
+                >
+                  Sign up
+                </button>
+              </form>
+              <div class="form-text fs-xs pt-1">
+                * By signing up you agree to our <a href="#">Privacy Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Articles list-->
+    <div class="col-lg-9">
+      <div class="ps-lg-3">
+        <!-- Article-->
+        {{ range .Pages}}
+        <article class="card card-horizontal border-0 mb-4">
+          <a
+            class="card-img-top position-relative rounded-3 me-sm-4 mb-sm-0 mb-3"
+            href="{{.Permalink | absLangURL}}"
+            {{with
+            .Params.blog_details}}
+            style="background-image: url({{.image}})"
+            {{end}}
+          ></a>
+
+          <div class="card-body px-0 pt-0 pb-lg-5 pb-sm-4 pb-2">
+            {{ range .Params.categories }}
+            <a
+              class="fs-sm text-uppercase text-decoration-none"
+              href="/categories/{{ . | urlize}}"
+              >{{.}}</a
+            >
+            {{end}}
+            <h3 class="h5 pt-1 mb-2">
+              <a class="nav-link" href="{{.Permalink | absLangURL}}"
+                >{{.Title}}</a
+              >
+            </h3>
+            <p class="fs-sm text-muted">{{.Summary}}</p>
+            {{ with .Params.blog_details}}
+            <a class="d-flex align-items-center text-decoration-none"
+              ><img
+                class="rounded-circle"
+                src="{{.author_image}}"
+                width="48"
+                alt="Avatar"
+              />
+              <div class="ps-2">
+                <h6 class="fs-sm text-nav lh-base mb-1">{{.author}}</h6>
+                <div class="d-flex text-body fs-xs">
+                  <span class="me-2 pe-1"
+                    ><i
+                      class="fi-calendar-alt opacity-70 mt-n1 me-1 align-middle"
+                    ></i
+                    >May 24</span
+                  ><span
+                    ><i
+                      class="fi-chat-circle opacity-70 mt-n1 me-1 align-middle"
+                    ></i
+                    >3 comments</span
+                  >
+                </div>
+              </div></a
+            >
+            {{end}}
+          </div>
+        </article>
+        {{end}}
+      </div>
+      <!-- Pagination-->
+    </div>
+  </div>
+</div>
+
+{{end}}

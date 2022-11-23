@@ -1,0 +1,90 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'CITY GUIDE | WEBSITE'
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  year = "year"
+	month = "month"
+
+[outputs]
+    home = [ "HTML", "JSON", "RSS"]
+
+
+[Languages.en]
+title = "My blog"
+languageName = "English"
+languageNameShort = "en"
+weight = 1
+
+[Languages.tha]
+title = "Mon blog"
+languageName = "Thai"
+languageNameShort = "tha"
+weight = 2
+
+
+[[languages.en.menu.main]]
+  identifier = 'Home'
+  name = 'Home'
+  title = 'Home'
+  pageref = '/'
+  url = '/'
+  weight = 1
+
+[[languages.en.menu.main]]
+  identifier = 'Resturants'
+  name = 'Resturants'
+  title = 'Resturants'
+  pageref = '/resturants'
+  url = '/resturants'
+  weight = 2
+
+[[languages.en.menu.main]]
+  identifier = 'About'
+  name = 'About'
+  title = 'About'
+  pageref = '/about'
+  url = '/about'
+  weight = 3
+
+[[languages.en.menu.main]]
+  identifier = 'Blog'
+  name = 'Blog'
+  title = 'Blog'
+  pageref = '/blog'
+  url = '/blog'
+  weight = 4
+
+[[languages.tha.menu.main]]
+  identifier = 'Home'
+  name = 'Home'
+  title = 'Home'
+  pageref = '/tha'
+  url = '/tha'
+  weight = 1
+
+[[languages.tha.menu.main]]
+  identifier = 'Resturants'
+  name = 'Resturants'
+  title = 'Resturants'
+  pageref = '/tha/resturants'
+  url = '/tha/resturants'
+  weight = 2
+
+[[languages.tha.menu.main]]
+  identifier = 'About'
+  name = 'About'
+  title = 'About'
+  pageref = '/about'
+  url = '/tha/about'
+  weight = 3
+
+[[languages.tha.menu.main]]
+  identifier = 'Blog'
+  name = 'Blog'
+  title = 'Blog'
+  pageref = '/tha/blog'
+  url = '/tha/blog'
+  weight = 4

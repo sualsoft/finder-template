@@ -1,0 +1,364 @@
+{{define "main"}}
+<!-- Page container-->
+<div class="container mt-5 mb-md-2 mb-lg-4 py-5">
+  <!-- Breadcrumb-->
+  <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="breadcrumb-item"><a href="/blog">Blog</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{.Title}}</li>
+    </ol>
+  </nav>
+  <h1 class="h2 pb-3">{{.Title}}</h1>
+  {{ with .Params.blog_details}}
+  <img class="rounded-3" src="{{.image}}" alt="Post image" />
+  {{end}}
+  <div class="row mt-4 pt-3">
+    <!-- Sidebar (offcanvas)-->
+    <aside class="col-lg-4">
+      <!-- Offcanvas-->
+      <div
+        class="offcanvas offcanvas-start offcanvas-collapse pe-lg-3"
+        id="blog-sidebar"
+      >
+        <div class="offcanvas-header shadow-sm mb-2">
+          <h3 class="h5 offcanvas-title">Sidebar</h3>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="offcanvas"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- Search-->
+          <div class="position-relative mb-4">
+            <input
+              class="form-control pe-5"
+              type="text"
+              placeholder="Search article by keywords..."
+            /><i
+              class="fi-search position-absolute top-50 end-0 translate-middle-y me-3"
+            ></i>
+          </div>
+          <!-- Author-->
+          <div class="card card-flush py-2 py-lg-0 mb-4">
+            <div class="card-body d-flex align-items-center">
+              <img
+                class="me-3 rounded-circle"
+                src="{{with .Params.blog_details}}{{.author_image}}{{end}}"
+                width="80"
+                alt="Avatar"
+              />
+              <div>
+                <h4 class="h5 mb-2">
+                  <a class="nav-link stretched-link p-0 fw-bold" href="#"
+                    >{{with .Params.blog_details}}{{.author}}{{end}}</a
+                  >
+                </h4>
+              </div>
+            </div>
+          </div>
+          <!-- Categories-->
+          <div class="card card-flush pb-2 pb-lg-0 mb-4">
+            <div class="card-body">
+              <h4 class="h5">Categories</h4>
+              <div class="mb-n2">
+                {{range ($.Site.GetPage "taxonomyTerm" "categories").Pages }}
+                <a
+                  class="nav-link mb-2 p-0 fw-normal d-flex justify-content-between"
+                  href="{{.Permalink | absLangURL}}"
+                  >{{.Title}}<span class="opacity-70"></span
+                ></a>
+                {{end}}
+              </div>
+            </div>
+          </div>
+          <!-- Tags-->
+          <div class="card card-flush pb-2 pb-lg-0 mb-4">
+            <div class="card-body">
+              <h4 class="h5">Popular Tags</h4>
+              <div class="d-flex flex-wrap mb-n1">
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Trending
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Tutorial
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Places
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Urban
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Tips
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Travel
+                </button>
+                <button
+                  class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >
+                  Restaurants
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Subscribe-->
+          <div class="card card-flush mb-4">
+            <div class="card-body">
+              <h4 class="h5">Stay Informed</h4>
+              <p class="fs-sm mb-3">
+                Subscribe to our newsletter and be the first to see the latest
+                news and advice.
+              </p>
+              <form class="form-group rounded-pill">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text text-muted"
+                    ><i class="fi-mail"></i
+                  ></span>
+                  <input
+                    class="form-control"
+                    type="email"
+                    placeholder="Your Email"
+                  />
+                </div>
+                <button
+                  class="btn btn-primary btn-sm rounded-pill"
+                  type="button"
+                >
+                  Sign up
+                </button>
+              </form>
+              <div class="form-text fs-xs pt-1">
+                * By signing up you agree to our <a href="#">Privacy Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Post content-->
+    <div class="col-lg-8">
+      <!-- Post meta-->
+      <div class="d-flex flex-wrap border-bottom pb-3 mb-4">
+        {{ range $category := .Params.Categories }}
+        <a class="text-uppercase text-decoration-none border-end pe-3 me-3 mb-2"
+          >{{ $category }}</a
+        >
+        {{end}}
+        <div class="d-flex align-items-center border-end pe-3 me-3 mb-2">
+          <i class="fi-calendar-alt opacity-70 me-2"></i
+          ><span>{{ .Date.Format "Mon, Jan 2, " }}</span>
+        </div>
+        <div class="d-flex align-items-center border-end pe-3 me-3 mb-2">
+          <i class="fi-clock opacity-70 me-2"></i
+          ><span
+            >{{ math.Round (div (countwords .Content) 220.0) }} min read</span
+          >
+        </div>
+        <a class="nav-link-muted d-flex align-items-center mb-2"
+          ><i class="fi-chat-circle opacity-70 me-2"></i
+          ><span
+            >{{with .Params.blog_details}}{{.comments}}{{end}} comments</span
+          ></a
+        >
+      </div>
+      {{.Content}}
+      <!-- Tags + Sharing-->
+      <div class="pt-4">
+        <div
+          class="d-md-flex align-items-center justify-content-between border-top pt-4"
+        >
+          <div class="d-flex align-items-center me-3 mb-3 mb-md-0">
+            <div class="d-none d-sm-block fw-bold text-nowrap mb-2 me-2 pe-1">
+              Tags:
+            </div>
+            <div class="d-flex flex-wrap">
+              {{ range $tag := .Params.tags }}
+              <a
+                class="btn btn-xs btn-outline-secondary rounded-pill fs-sm fw-normal me-2 mb-2"
+                >{{$tag}}</a
+              >
+              {{end}}
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="fw-bold text-nowrap pe-1 mb-2">Share:</div>
+            <div class="d-flex">
+              <a
+                class="btn btn-icon btn-light-primary btn-xs rounded-circle shadow-sm mb-2 ms-2"
+                href="#"
+                data-bs-toggle="tooltip"
+                title="Share with Facebook"
+                ><i class="fi-facebook"></i></a
+              ><a
+                class="btn btn-icon btn-light-primary btn-xs rounded-circle shadow-sm mb-2 ms-2"
+                href="#"
+                data-bs-toggle="tooltip"
+                title="Share with Twitter"
+                ><i class="fi-twitter"></i></a
+              ><a
+                class="btn btn-icon btn-light-primary btn-xs rounded-circle shadow-sm mb-2 ms-2"
+                href="#"
+                data-bs-toggle="tooltip"
+                title="Share with LinkedIn"
+                ><i class="fi-linkedin"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Recent posts-->
+  <div class="pt-5 mt-md-4 mb-lg-2">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 pb-2">
+      <h2 class="h3 mb-sm-0">You may be also interested in</h2>
+      <a class="btn btn-link fw-normal ms-sm-3 p-0" href="city-guide-blog.html"
+        >Go to blog<i class="fi-arrow-long-right ms-2"></i
+      ></a>
+    </div>
+    <!-- Carousel-->
+    <div class="tns-carousel-wrapper tns-nav-outside">
+      <div
+        class="tns-carousel-inner d-block"
+        data-carousel-options='{"controls": false, "gutter": 24, "autoHeight": true, "responsive": {"0":{"items":1,"nav":true},"500":{"items":2},"850":{"items":3},"1200":{"items":3}}}'
+      >
+        <!-- Item-->
+        <article>
+          <a class="d-block mb-3" href="city-guide-blog-single.html"
+            ><img
+              class="rounded-3"
+              src="img/city-guide/blog/12.jpg"
+              alt="Post image" /></a
+          ><a class="fs-xs text-uppercase text-decoration-none" href="#"
+            >Travelling</a
+          >
+          <h3 class="fs-base pt-1">
+            <a class="nav-link" href="city-guide-blog-single.html"
+              >10 Travel Mistakes to Avoid During Coronavirus</a
+            >
+          </h3>
+          <a class="d-flex align-items-center text-decoration-none" href="#"
+            ><img
+              class="rounded-circle"
+              src="img/avatars/16.png"
+              width="44"
+              alt="Avatar"
+            />
+            <div class="ps-2">
+              <h6 class="fs-sm text-nav lh-base mb-1">Bessie Cooper</h6>
+              <div class="d-flex text-body fs-xs">
+                <span class="me-2 pe-1"
+                  ><i
+                    class="fi-calendar-alt opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >May 24</span
+                ><span
+                  ><i
+                    class="fi-chat-circle opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >No comments</span
+                >
+              </div>
+            </div></a
+          >
+        </article>
+        <!-- Item-->
+        <article>
+          <a class="d-block mb-3" href="#"
+            ><img
+              class="rounded-3"
+              src="img/city-guide/blog/13.jpg"
+              alt="Post image" /></a
+          ><a class="fs-xs text-uppercase text-decoration-none" href="#"
+            >Inspiration</a
+          >
+          <h3 class="fs-base pt-1">
+            <a class="nav-link" href="city-guide-blog-single.html"
+              >10 World-Class Museums You Can Visit Online</a
+            >
+          </h3>
+          <a class="d-flex align-items-center text-decoration-none" href="#"
+            ><img
+              class="rounded-circle"
+              src="img/avatars/18.png"
+              width="44"
+              alt="Avatar"
+            />
+            <div class="ps-2">
+              <h6 class="fs-sm text-nav lh-base mb-1">Annette Black</h6>
+              <div class="d-flex text-body fs-xs">
+                <span class="me-2 pe-1"
+                  ><i
+                    class="fi-calendar-alt opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >Apr 28</span
+                ><span
+                  ><i
+                    class="fi-chat-circle opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >4 comments</span
+                >
+              </div>
+            </div></a
+          >
+        </article>
+        <!-- Item-->
+        <article>
+          <a class="d-block mb-3" href="#"
+            ><img
+              class="rounded-3"
+              src="img/city-guide/blog/14.jpg"
+              alt="Post image" /></a
+          ><a class="fs-xs text-uppercase text-decoration-none" href="#"
+            >Entertainment</a
+          >
+          <h3 class="fs-base pt-1">
+            <a class="nav-link" href="#">7 Tips for Solo Travelers in Africa</a>
+          </h3>
+          <a class="d-flex align-items-center text-decoration-none" href="#"
+            ><img
+              class="rounded-circle"
+              src="img/avatars/17.png"
+              width="44"
+              alt="Avatar"
+            />
+            <div class="ps-2">
+              <h6 class="fs-sm text-nav lh-base mb-1">Ralph Edwards</h6>
+              <div class="d-flex text-body fs-xs">
+                <span class="me-2 pe-1"
+                  ><i
+                    class="fi-calendar-alt opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >Mar 15</span
+                ><span
+                  ><i
+                    class="fi-chat-circle opacity-70 mt-n1 me-1 align-middle"
+                  ></i
+                  >2 comments</span
+                >
+              </div>
+            </div></a
+          >
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}

@@ -1,0 +1,107 @@
+{{define "main"}}
+<!-- Page container-->
+<div class="container mt-5 mb-md-4 py-5">
+  <!-- Title + Breadcrumb-->
+  <nav class="mb-3 pt-2 pt-lg-3" aria-label="Breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="/add-business">Add business</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Promotion page</li>
+    </ol>
+  </nav>
+
+  <h1 class="h2 mb-4">{{.Title}}</h1>
+  {{with .Params.hero}}
+  <h2 class="h3 pb-2 mb-4">{{.sub_title}}</h2>
+  {{end}}
+  <!---->
+  {{with .Params.service_section}}
+  <div class="row">
+    {{range .services}}
+    <div class="col-sm-6 col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <img
+            class="d-block mx-auto mt-2 mb-4"
+            src="{{.icon}}"
+            width="72"
+            alt="Icon"
+          />
+          <h2 class="h5 fw-normal text-center py-1 mb-0">{{.name}}</h2>
+          <div class="d-flex align-items-end justify-content-center mb-4">
+            <div class="h1 mb-0">${{.price}}</div>
+            <div class="pb-2 ps-2">/{{.per}}</div>
+          </div>
+          <ul
+            class="list-unstyled d-block mb-0 mx-auto"
+            style="max-width: 16rem"
+          >
+            {{range .includes}}
+            <li class="d-flex">
+              <i class="fi-check text-primary fs-sm mt-1 me-2"></i
+              ><span>{{.}}</span>
+            </li>
+            {{end}}
+            <!---->
+
+            {{range .excludes}}
+            <li class="d-flex text-muted">
+              <i class="fi-x fs-xs mt-2 me-2"></i><span>{{.}}</span>
+            </li>
+            {{end}}
+          </ul>
+        </div>
+        <div class="card-footer py-2 border-0">
+          <div class="border-top text-center pt-4 pb-3">
+            <a class="btn btn-outline-primary rounded-pill" href="{{.link}}"
+              >Choose plan</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    {{end}}
+  </div>
+  {{end}} {{with .Params.other_services}}
+  <h2 class="h3 pt-4 pt-md-5 mb-4">{{.title}}</h2>
+  {{ range .services}}
+  <div class="card card-hover card-body px-4 mb-2">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="ad-option-{{.id}}"
+        {{if.checked}}
+        checked
+        {{end}}
+      />
+      <label
+        class="form-check-label d-sm-flex align-items-center justify-content-between"
+        for="ad-option-{{.id}}"
+        ><span class="d-block px-1"
+          ><span class="d-block h6 mb-2">{{.title}}</span
+          ><span class="d-block mb-2 mb-sm-0">{{.sub_title}}</span></span
+        ><span class="d-block h4 mb-0">{{.price}}</span></label
+      >
+    </div>
+  </div>
+  {{end}}
+  <div class="text-end pt-4 pb-5">
+    <div class="h4 mb-4">Total: $35</div>
+    <button
+      class="btn btn-outline-secondary btn-lg rounded-pill me-2"
+      type="button"
+    >
+      Do not promote
+    </button>
+    <button class="btn btn-primary btn-lg rounded-pill" type="button">
+      Submit
+    </button>
+  </div>
+  {{end}}
+</div>
+{{end}}

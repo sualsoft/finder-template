@@ -1,0 +1,917 @@
+{{ define "main"}}
+
+<!-- Review modal-->
+<div class="modal fade" id="modal-review " tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div
+        class="modal-header d-block position-relative border-0 pb-0 px-sm-5 px-4"
+      >
+        <h3 class="modal-title mt-4 text-center">Leave a review</h3>
+        <button
+          class="btn-close position-absolute top-0 end-0 mt-3 me-3"
+          type="button"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body px-sm-5 px-4">
+        <form class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="review-name"
+              >Name <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="text"
+              id="review-name"
+              placeholder="Your name"
+              required
+            />
+            <div class="invalid-feedback">Please let us know your name.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="review-email"
+              >Email <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="email"
+              id="review-email"
+              placeholder="Your email address"
+              required
+            />
+            <div class="invalid-feedback">
+              Please provide a valid email address.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="review-rating"
+              >Rating <span class="text-danger">*</span></label
+            >
+            <select
+              class="form-control form-select"
+              id="review-rating"
+              required
+            >
+              <option value="" selected disabled hidden>Choose rating</option>
+              <option value="5 stars">5 stars</option>
+              <option value="4 stars">4 stars</option>
+              <option value="3 stars">3 stars</option>
+              <option value="2 stars">2 stars</option>
+              <option value="1 star">1 star</option>
+            </select>
+            <div class="invalid-feedback">Please rate the property.</div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="review-text"
+              >Review <span class="text-danger">*</span></label
+            >
+            <textarea
+              class="form-control"
+              id="review-text"
+              rows="5"
+              placeholder="Your review message"
+              required
+            ></textarea>
+            <div class="invalid-feedback">Please write your review.</div>
+          </div>
+          <button
+            class="btn btn-primary d-block rounded-pill w-100 mb-4"
+            type="submit"
+          >
+            Submit a review
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page header-->
+<section class="container pt-5 mt-5">
+  <!-- Breadcrumb-->
+  <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="/resturants/">Find accommodation</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{.Title}}</li>
+    </ol>
+  </nav>
+  <div
+    class="d-sm-flex align-items-center justify-content-between mb-4 pb-sm-2"
+  >
+    <h1 class="h2 me-3 mb-sm-0">{{.Title}}</h1>
+    <div class="text-nowrap">
+      <button
+        class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle"
+        type="button"
+        data-bs-toggle="tooltip"
+        title="Add to Wishlist"
+      >
+        <i class="fi-heart"></i>
+      </button>
+      <div
+        class="dropdown d-inline-block"
+        data-bs-toggle="tooltip"
+        title="Share"
+      >
+        <button
+          class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle ms-2"
+          type="button"
+          data-bs-toggle="dropdown"
+        >
+          <i class="fi-share"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end my-1">
+          <button class="dropdown-item" type="button">
+            <i class="fi-facebook fs-base opacity-75 me-2"></i>Facebook
+          </button>
+          <button class="dropdown-item" type="button">
+            <i class="fi-twitter fs-base opacity-75 me-2"></i>Twitter
+          </button>
+          <button class="dropdown-item" type="button">
+            <i class="fi-instagram fs-base opacity-75 me-2"></i>Instagram
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Nav pills-->
+  <ul class="nav nav-pills border-bottom pb-3 mb-4" id="gallery">
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center active" href="#gallery"
+        ><i class="fi-image me-2"></i>Gallery</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#info"
+        ><i class="fi-info-circle me-2"></i>Info</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#reviews"
+        ><i class="fi-edit me-2"></i>Reviews</a
+      >
+    </li>
+  </ul>
+</section>
+
+<!-- Gallery-->
+{{with .Params.hero}}
+<section class="container overflow-auto mb-5" data-simplebar>
+  <div
+    class="row g-2 g-md-3 gallery"
+    data-thumbnails="true"
+    style="min-width: 30rem"
+  >
+    <div class="col-8">
+      <a
+        class="gallery-item rounded rounded-md-3"
+        href="{{.image}}"
+        data-sub-html='&lt;h6 class="fs-sm text-light"&gt;Kids bed&lt;/h6&gt;'
+        ><img src="{{.image}}" alt="Gallery thumbnail"
+      /></a>
+    </div>
+
+    <div class="col-4">
+      {{range .gallery_right}}
+      <a
+        class="gallery-item rounded rounded-md-3"
+        href="{{.}}"
+        data-sub-html='&lt;h6 class="fs-sm text-light"&gt;Working desk&lt;/h6&gt;'
+        ><img src="{{.}}" alt="Gallery thumbnail"
+      /></a>
+      {{end}}
+    </div>
+
+    <div class="col-12">
+      <div class="row g-2 g-md-3">
+        {{range .gallery_bottom}}
+        <div class="col">
+          <a
+            class="gallery-item rounded-1 rounded-md-2"
+            href="{{.}}"
+            data-sub-html='&lt;h6 class="fs-sm text-light"&gt;Working desk&lt;/h6&gt;'
+            ><img src="{{.}}" alt="Gallery thumbnail"
+          /></a>
+        </div>
+        {{end}}
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!--Page Info-->
+<!-- Page header-->
+<section class="container pt-5 mt-5" id="info">
+  <!-- Nav pills-->
+  <ul class="nav nav-pills border-bottom pb-3 mb-4">
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#gallery"
+        ><i class="fi-image me-2"></i>Gallery</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center active" href="#info"
+        ><i class="fi-info-circle me-2"></i>Info</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#reviews"
+        ><i class="fi-edit me-2"></i>Reviews</a
+      >
+    </li>
+  </ul>
+</section>
+<!-- Page content -->
+{{with .Params.info}}
+<section class="container pb-5 mb-md-4">
+  <div class="row">
+    <!-- Left column-->
+    <div class="col-md-7 mb-md-0 mb-4 pb-md-0 pb-2">
+      <h2 class="h4">{{.title}}</h2>
+      <ul class="list-unstyled">
+        <li>
+          <i class="fi-wallet mt-n1 me-1 align-middle opacity-70"></i
+          >{{.currency}}
+        </li>
+        <li>
+          <i class="fi-map-pin mt-n1 me-1 align-middle opacity-70"></i
+          >{{.distance}}
+        </li>
+      </ul>
+      <div class="mb-4 pb-md-3">
+        <p class="mb-1">{{.short_description}}</p>
+        <div class="collapse" id="seeMoreAbout">
+          <p class="mb-1">{{.more_description}}</p>
+        </div>
+        <a
+          class="collapse-label collapsed"
+          href="#seeMoreAbout"
+          data-bs-toggle="collapse"
+          data-bs-label-collapsed="Show more"
+          data-bs-label-expanded="Show less"
+          role="button"
+          aria-expanded="false"
+          aria-controls="seeMoreAbout"
+        ></a>
+      </div>
+      <!-- Amenities-->
+      <div class="mb-4 pb-md-3">
+        <h2 class="h4">Amenities</h2>
+        <ul
+          class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap"
+        >
+          {{ range .show_amenities}}
+          <li class="col">
+            <i class="{{.icon}} mt-n1 me-2 fs-lg align-middle"></i>{{.name}}
+          </li>
+          {{end}}
+        </ul>
+        <div class="collapse" id="seeMoreAmenities">
+          <ul
+            class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap"
+          >
+            {{range .more_amenities}}
+            <li class="col">
+              <i class="{{.icon}} mt-n1 me-2 fs-lg align-middle"></i>{{.name}}
+            </li>
+            {{end}}
+          </ul>
+        </div>
+        <a
+          class="collapse-label collapsed"
+          href="#seeMoreAmenities"
+          data-bs-toggle="collapse"
+          data-bs-label-collapsed="Show more"
+          data-bs-label-expanded="Show less"
+          role="button"
+          aria-expanded="false"
+          aria-controls="seeMoreAmenities"
+        ></a>
+      </div>
+      <!-- Room types-->
+      <div class="mb-4 pb-md-3">
+        <h2 class="h4">Room types</h2>
+        <ul
+          class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap"
+        >
+          {{range .room_types}}
+          <li class="col text-center">
+            <i class="{{.icon}}  mt-n1 me-2 fs-lg align-middle"></i>{{.name}}
+          </li>
+          {{end}}
+        </ul>
+      </div>
+      <!-- Awards-->
+      <h2 class="h4">Awards</h2>
+      <ul class="list-unstyled">
+        {{range .awards}}
+        <li class="d-flex align-items-center mb-2">
+          <img
+            class="flex-shrink-0 me-2"
+            src="{{.icon}}"
+            width="40"
+            alt="Award logo"
+          />
+          <div>{{.name}}</div>
+        </li>
+        {{end}}
+      </ul>
+      <hr class="my-4" />
+      <!-- Payment-->
+      <div class="d-lg-flex align-items-center pb-2 pb-lg-0">
+        <h4 class="fs-lg mb-lg-0">Cards accepted at this hotel:</h4>
+        <div class="ps-lg-3">
+          {{range .payment}}
+          <img
+            class="me-2 border rounded-1 shadow-sm"
+            src="{{.}}"
+            width="54"
+            alt="Visa"
+          />
+          {{end}}
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar-->
+    {{ with .hotel_details}}
+    <aside class="col-md-5">
+      <!-- Place card-->
+      <div class="card mb-4 p-2 shadow-sm">
+        <div class="card-body">
+          <!-- Place info-->
+          <div class="d-flex align-items-start mb-3 pb-2 border-bottom">
+            <img src="{{.logo}}" width="60" alt="Thumbnail" />
+            <div class="ps-2 ms-1">
+              <h3 class="h5 mb-2">{{.hotel_name}}</h3>
+              <ul class="list-unstyled d-flex flex-wrap fs-sm">
+                <li class="me-2 mb-1 pe-1">
+                  <i
+                    class="fi-star-filled mt-n1 me-1 text-warning align-middle opacity-70"
+                  ></i
+                  ><b>{{.reviews_score}} </b>({{.reviews}})
+                </li>
+                <li class="me-2 mb-1 pe-1">
+                  <i class="fi-wallet mt-n1 me-1 align-middle opacity-70"></i>$$
+                </li>
+                <li class="me-2 mb-1 pe-1">
+                  <i class="fi-map-pin mt-n1 me-1 align-middle opacity-70"></i
+                  >{{.distance}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Place contacts-->
+          {{ with .contact}}
+          <div class="mb-3 pb-3 border-bottom">
+            <h4 class="h5 mb-2">Contacts:</h4>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                <a class="nav-link p-0 fw-normal d-flex align-items-start"
+                  ><i class="fi-map-pin mt-1 me-2 align-middle opacity-70"></i
+                  >{{.address}}</a
+                >
+              </li>
+              <li class="nav-item mb-2">
+                {{range .phone}}
+                <a
+                  class="nav-link d-inline-block p-0 fw-normal d-inline-flex align-items-start"
+                  href="tel:{{.}}"
+                  ><i class="fi-phone mt-1 me-2 align-middle opacity-70"></i
+                  >{{.}}</a
+                >, {{end}}
+              </li>
+              <li class="nav-item mb-2">
+                <a
+                  class="nav-link p-0 fw-normal d-flex align-items-start"
+                  href="https://{{.website}}"
+                  ><i class="fi-globe mt-1 me-2 align-middle opacity-60"></i
+                  >{{.website}}</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link p-0 fw-normal d-flex align-items-start"
+                  href="mailto:{{.email}}"
+                  ><i class="fi-mail mt-1 me-2 align-middle opacity-70"></i
+                  >{{.email}}</a
+                >
+              </li>
+            </ul>
+          </div>
+          {{end}}
+
+          <!-- Place pricing-->
+          {{with .pricing}}
+          <div class="mb-3 pb-4 border-bottom">
+            <div class="row row-cols-1">
+              <div class="col mb-3">
+                <h4 class="h5 mb-0">
+                  <span class="fs-4">{{.price_range}}</span
+                  ><span class="fs-base fw-normal text-body"
+                    >/{{.price_per}}</span
+                  >
+                </h4>
+              </div>
+              <div class="col">
+                <a
+                  class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100"
+                  href="{{.booking_link}}"
+                  >Book now<i class="fi-chevron-right fs-sm ms-2"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+          {{end}}
+
+          <!-- Place following-->
+          {{with .social}}
+          <div class="d-flex align-items-center">
+            <h4 class="h5 mb-0 me-3">Follow:</h4>
+            <div class="text-nowrap">
+              <a
+                class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2"
+                target="_blank"
+                href="{{.fb}}"
+                ><i class="fi-facebook"></i></a
+              ><a
+                class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2"
+                target="_blank"
+                href="{{.ig}}"
+                ><i class="fi-instagram"></i></a
+              ><a
+                class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle"
+                target="_blank"
+                href="{{.tw}}"
+                ><i class="fi-twitter"></i
+              ></a>
+            </div>
+          </div>
+          {{end}}
+        </div>
+      </div>
+
+      <!-- Location (Map)-->
+      {{with .direction}}
+      <div class="position-relative">
+        <img class="rounded-3" src="{{.image}}" alt="Map" />
+        <div
+          class="d-flex w-100 h-100 flex-column align-items-center justify-content-center position-absolute top-0 start-0"
+        >
+          <img
+            class="d-block mx-auto mb-4 rounded-circle bg-white shadow"
+            src="{{.logo}}"
+            width="40"
+            alt="Place logo"
+          /><a
+            class="btn btn-primary rounded-pill stretched-link"
+            href="{{.link}}"
+            data-iframe="true"
+            data-bs-toggle="lightbox"
+            ><i class="fi-route me-2"></i>Get directions</a
+          >
+        </div>
+      </div>
+      {{end}}
+    </aside>
+    {{end}}
+  </div>
+</section>
+{{end}}
+
+<!--review Section-->
+{{with .Params.review}}
+<!-- Page header-->
+<section class="container pt-5 mt-5" id="reviews">
+  <!-- Nav pills-->
+  <ul class="nav nav-pills border-bottom pb-3 mb-4">
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#gallery"
+        ><i class="fi-image me-2"></i>Gallery</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#info"
+        ><i class="fi-info-circle me-2"></i>Info</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center active" href="#reviews"
+        ><i class="fi-edit me-2"></i>Reviews</a
+      >
+    </li>
+  </ul>
+</section>
+<!-- Page content-->
+<section class="container pb-5 mb-md-4">
+  <div class="row">
+    <!-- Left column-->
+    <div class="col-md-7 mb-md-0 mb-4 pb-md-0 pb-2">
+      {{with .ratings}}
+      <h2 class="h4 mb-4">{{.title}}</h2>
+      <div class="row mb-md-5 mb-4">
+        <!-- Rating breakdown-->
+        <div class="col-sm-8 order-sm-1 order-2">
+          <div class="d-flex align-items-center mb-2 fs-sm">
+            <div class="text-nowrap">
+              5<i class="fi-star mt-n1 ms-1 align-middle opacity-70"></i>
+            </div>
+            <div class="progress w-100 mx-3">
+              <div
+                class="progress-bar bg-warning"
+                role="progressbar"
+                style="width: {{.five_star}}"
+                aria-valuenow="80"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <span style="min-width: 48px">{{.five_star}}</span>
+          </div>
+          <div class="d-flex align-items-center mb-2 fs-sm">
+            <div class="text-nowrap">
+              4<i class="fi-star mt-n1 ms-1 align-middle opacity-70"></i>
+            </div>
+            <div class="progress w-100 mx-3">
+              <div
+                class="progress-bar bg-warning"
+                role="progressbar"
+                style="width: {{.four_star}}"
+                aria-valuenow="10"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <span style="min-width: 48px">{{.four_star}}</span>
+          </div>
+          <div class="d-flex align-items-center mb-2 fs-sm">
+            <div class="text-nowrap">
+              3<i class="fi-star mt-n1 ms-1 align-middle opacity-70"></i>
+            </div>
+            <div class="progress w-100 mx-3">
+              <div
+                class="progress-bar bg-warning"
+                role="progressbar"
+                style="width: {{.three_star}}"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <span style="min-width: 48px">{{.three_star}}</span>
+          </div>
+          <div class="d-flex align-items-center mb-2 fs-sm">
+            <div class="text-nowrap">
+              2<i class="fi-star mt-n1 ms-1 align-middle opacity-70"></i>
+            </div>
+            <div class="progress w-100 mx-3">
+              <div
+                class="progress-bar bg-warning"
+                role="progressbar"
+                style="width: {{.two_star}}"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <span style="min-width: 48px">{{.two_star}}</span>
+          </div>
+          <div class="d-flex align-items-center mb-2 fs-sm">
+            <div class="text-nowrap">
+              1<i class="fi-star mt-n1 ms-1 align-middle opacity-70"></i>
+            </div>
+            <div class="progress w-100 mx-3">
+              <div
+                class="progress-bar bg-warning"
+                role="progressbar"
+                style="width: {{.one_star}}"
+                aria-valuenow="10"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <span style="min-width: 48px">{{.one_star}}</span>
+          </div>
+        </div>
+        {{end}}
+        <!-- Score-->
+        {{with .rating_score}}
+        <div class="col-sm-4 order-sm-2 order-1 mb-sm-0 mb-3 text-center">
+          <h5 class="display-4 mb-2">{{.score}}</h5>
+          <div>
+            <span class="star-rating">
+              {{ range seq .stars }}
+              <i class="star-rating-icon fi-star-filled active"></i>
+              {{end}}
+            </span>
+          </div>
+          <span class="fs-sm">{{.all}} reviews</span>
+        </div>
+      </div>
+      {{end}}
+
+      <!-- Add review btn + Reviews sort-->
+      <div
+        class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-4 pb-4 border-bottom"
+      >
+        <a
+          class="btn btn-outline-primary rounded-pill mb-sm-0 mb-3"
+          href="#modal-review"
+          data-bs-toggle="modal"
+          ><i class="fi-edit mt-n1 me-1 align-middle"></i>Add review</a
+        >
+        <div class="d-flex align-items-center ms-sm-4">
+          <label
+            class="d-inline-block me-2 pe-1 text-muted text-nowrap"
+            for="reviews-sort"
+            ><i class="fi-arrows-sort mt-n1 me-1 align-middle opacity-80"></i
+            >Sort by:</label
+          >
+          <select
+            class="form-select"
+            id="reviews-sort"
+            style="min-width: 180px"
+          >
+            <option>Newest</option>
+            <option>Oldest</option>
+            <option>Popular</option>
+            <option>High rating</option>
+            <option>Low rating</option>
+          </select>
+        </div>
+      </div>
+      {{ range.reviews}}
+      <div class="mb-4 pb-4 border-bottom">
+        <div class="d-flex justify-content-between mb-3">
+          <div class="d-flex align-items-center pe-2">
+            <img
+              class="rounded-circle me-1"
+              src="{{.avatar}}"
+              width="48"
+              alt="Avatar"
+            />
+            <div class="ps-2">
+              <h6 class="fs-base mb-0">{{.name}}</h6>
+              <span class="star-rating">
+                {{range seq .fill_starts}}
+                <i class="star-rating-icon fi-star-filled active"> </i>{{end}}
+                {{range seq .unfill_starts}}
+                <i class="star-rating-icon fi-star"></i>
+                {{end}}
+              </span>
+            </div>
+          </div>
+          <span class="text-muted fs-sm">{{.date}}</span>
+        </div>
+        <p>{{.content}}</p>
+        <div class="d-flex align-items-center">
+          <button class="btn-like" type="button">
+            <i class="fi-like"></i><span>({{.likes}})</span>
+          </button>
+          <div class="border-end me-1">&nbsp;</div>
+          <button class="btn-dislike" type="button">
+            <i class="fi-dislike"></i><span>({{.dislikes}})</span>
+          </button>
+        </div>
+      </div>
+      {{end}}
+      <!-- Review pagination + Add review btn-->
+      <div class="d-flex align-items-center justify-content-between">
+        <nav aria-label="Reviews pagination">
+          <ul class="pagination mb-0">
+            <li class="page-item d-sm-none">
+              <span class="page-link page-link-static">1 / 8</span>
+            </li>
+            <li class="page-item active d-none d-sm-block" aria-current="page">
+              <span class="page-link"
+                >1<span class="visually-hidden">(current)</span></span
+              >
+            </li>
+            <li class="page-item d-none d-sm-block">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item d-none d-sm-block">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item d-none d-sm-block">...</li>
+            <li class="page-item d-none d-sm-block">
+              <a class="page-link" href="#">8</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next"
+                ><i class="fi-chevron-right"></i
+              ></a>
+            </li>
+          </ul>
+        </nav>
+        <a
+          class="btn btn-outline-primary rounded-pill ms-4"
+          href="#modal-review"
+          data-bs-toggle="modal"
+          ><i class="fi-edit mt-n1 me-1 align-middle"></i>Add review</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!-- Recently viewed-->
+<section class="container pb-5 mb-5">
+  <div class="d-flex align-items-center justify-content-between mb-4 pb-2">
+    <h2 class="h3 mb-0">Recently viewed</h2>
+    <a class="btn btn-link fw-normal ms-sm-3 p-0" href="/resturants/"
+      >View all<i class="fi-arrow-long-right ms-2"></i
+    ></a>
+  </div>
+  <div
+    class="tns-carousel-wrapper tns-controls-outside-xxl tns-nav-outside mb-xxl-2"
+  >
+    <div
+      class="tns-carousel-inner"
+      data-carousel-options='{"items": 3, "gutter": 24, "responsive": {"0":{"items":1,"nav":true},"500":{"items":2},"850":{"items":3},"1400":{"items":3,"nav":false}}}'
+    >
+      <!-- Item-->
+      <div>
+        <div class="position-relative">
+          <div class="position-relative mb-3">
+            <button
+              class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5"
+              type="button"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="Add to Wishlist"
+            >
+              <i class="fi-heart"></i></button
+            ><img
+              class="rounded-3"
+              src="/img/city-guide/catalog/09.jpg"
+              alt="Article img"
+            />
+          </div>
+          <h3 class="mb-2 fs-lg">
+            <a class="nav-link stretched-link" href="#">Repose Hotel</a>
+          </h3>
+          <ul class="list-inline mb-0 fs-xs">
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-star-filled mt-n1 me-1 fs-base text-warning align-middle"
+              ></i
+              ><b>5.0</b><span class="text-muted">&nbsp;(48)</span>
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-credit-card mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >$$
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-map-pin mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >1.4 km from center
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Item-->
+      <div>
+        <div class="position-relative">
+          <div class="position-relative mb-3">
+            <button
+              class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5"
+              type="button"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="Add to Wishlist"
+            >
+              <i class="fi-heart"></i></button
+            ><img
+              class="rounded-3"
+              src="/img/city-guide/catalog/05.jpg"
+              alt="Article img"
+            />
+          </div>
+          <h3 class="mb-2 fs-lg">
+            <a class="nav-link stretched-link" href="#">Leisure Inn</a>
+          </h3>
+          <ul class="list-inline mb-0 fs-xs">
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-star-filled mt-n1 me-1 fs-base text-warning align-middle"
+              ></i
+              ><b>4.8</b><span class="text-muted">&nbsp;(24)</span>
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-credit-card mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >$$$
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-map-pin mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >0.5 km from center
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Item-->
+      <div>
+        <div class="position-relative">
+          <div class="position-relative mb-3">
+            <button
+              class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5"
+              type="button"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="Add to Wishlist"
+            >
+              <i class="fi-heart"></i></button
+            ><img
+              class="rounded-3"
+              src="/img/city-guide/catalog/11.jpg"
+              alt="Article img"
+            />
+          </div>
+          <h3 class="mb-2 fs-lg">
+            <a class="nav-link stretched-link" href="#">Soothe &amp; Stay</a>
+          </h3>
+          <ul class="list-inline mb-0 fs-xs">
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-star-filled mt-n1 me-1 fs-base text-warning align-middle"
+              ></i
+              ><b>4.9</b><span class="text-muted">&nbsp;(43)</span>
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-credit-card mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >$$$
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-map-pin mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >1.8 km from center
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Item-->
+      <div>
+        <div class="position-relative">
+          <div class="position-relative mb-3">
+            <button
+              class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5"
+              type="button"
+              data-bs-toggle="tooltip"
+              data-bs-placement="left"
+              title="Add to Wishlist"
+            >
+              <i class="fi-heart"></i></button
+            ><img
+              class="rounded-3"
+              src="/img/city-guide/catalog/04.jpg"
+              alt="Article img"
+            />
+          </div>
+          <h3 class="mb-2 fs-lg">
+            <a class="nav-link stretched-link" href="#">Merry Berry Motel</a>
+          </h3>
+          <ul class="list-inline mb-0 fs-xs">
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-star-filled mt-n1 me-1 fs-base text-warning align-middle"
+              ></i
+              ><b>4.5</b><span class="text-muted">&nbsp;(13)</span>
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-credit-card mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >$$
+            </li>
+            <li class="list-inline-item pe-1">
+              <i
+                class="fi-map-pin mt-n1 me-1 fs-base text-muted align-middle"
+              ></i
+              >0.4 km from center
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{end}}

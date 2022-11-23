@@ -1,0 +1,268 @@
+{{ define "main"}}
+
+<!--Hero banner-->
+{{with .Params.hero}}
+<section class="mt-5 pt-4">
+  <!-- Parallax container-->
+  <div class="jarallax mt-2" data-jarallax data-speed="0.5">
+    <!-- Parallax image-->
+    <div
+      class="jarallax-img bg-secondary"
+      style="
+        background-image: url({{.bg}});
+        background-position: 36% center !important;
+      "
+    ></div>
+    <!-- Section content-->
+    <div class="container py-3">
+      <!-- Breadcrumb-->
+      <nav class="pt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-light mb-lg-5">
+          <li class="breadcrumb-item">
+            <a href="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">About</li>
+        </ol>
+      </nav>
+      <!-- Text-->
+      <div class="col-md-6 col-sm-8 py-md-5 py-4 px-0">
+        <h1 class="display-4 mb-4 pb-md-2 text-light">{{.title | safeHTML}}</h1>
+        <p class="mb-sm-5 mb-4 pb-md-5 pb-3 lead text-light">{{.content}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!-- Features-->
+{{with .Params.feature}}
+<section
+  class="position-relative bg-white rounded-xxl-4 mb-5 pb-1 py-md-3 zindex-5"
+  style="margin-top: -30px"
+>
+  <div class="container pt-5 mb-4 mb-md-5">
+    <h2 class="text-center">{{.title}}</h2>
+    <p class="mb-4 pb-2 mx-auto fs-lg text-center" style="max-width: 616px">
+      {{.content}}
+    </p>
+    <!-- Features grid-->
+    <div
+      class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 justify-content-center"
+    >
+      <!-- Feature item-->
+      {{ range .cards}}
+      <div class="col">
+        <div class="card border-0 shadow-sm card-hover h-100">
+          <div class="card-body icon-box">
+            <div class="icon-box-media {{.bg}} {{.color}} rounded-circle mb-3">
+              <i class="{{.icon}}"></i>
+            </div>
+            <h3 class="h5 card-title">{{.title}}</h3>
+            <p class="card-text fs-sm">{{.content}}</p>
+          </div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!-- Add business-->
+{{ with .Params.add_business}}
+<section class="container mb-5 pb-2 pb-lg-5">
+  <div class="row align-items-lg-center gy-4">
+    <div class="col-md-6">
+      <img class="rounded-3" src="{{.picture}}" alt="Cover" />
+    </div>
+    <div class="col-lg-5 offset-lg-1 col-md-6">
+      <h2 class="mb-lg-4">{{.title}}</h2>
+      <p class="mb-lg-4 fs-lg text-muted">{{.content}}</p>
+      <ul class="list-unstyled mb-4 pb-lg-3">
+        {{ range .list}}
+        <li class="d-flex">
+          <i class="fi-check mt-1 me-2 pe-1 text-primary"></i>{{.}}
+        </li>
+        {{end}}
+      </ul>
+      {{ with .button}}
+      <a class="btn btn-lg btn-primary rounded-pill" href="{{.link}}"
+        ><i class="fi-plus me-2"></i>{{.label}}</a
+      >
+      {{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!-- Our partners (carousel)-->
+{{ with .Params.our_partners}}
+<section class="container mb-5 pb-4">
+  <h2 class="h3 mb-4 text-center">{{.title}}</h2>
+  <div class="tns-carousel-wrapper tns-nav-outside tns-nav-outside-flush">
+    <div
+      class="tns-carousel-inner"
+      data-carousel-options='{"items": 6, "controls": false, "responsive": {"0":{"items":2}, "500":{"items":4}, "992":{"items":5, "gutter": 16}, "1200":{"items":6, "gutter": 24}}}'
+    >
+      {{range.partners}}
+      <div>
+        <a class="swap-image" href="#"
+          ><img class="swap-to" src="{{.color}}" alt="Logo" width="196" /><img
+            class="swap-from"
+            src="{{.gray}}"
+            alt="Logo"
+            width="196"
+        /></a>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+<!-- Hear from our customers-->
+{{with .Params.reviews}}
+<section class="container mb-5 pb-xl-5 pb-md-2">
+  <h2 class="h3 mb-3 text-center">{{.title}}</h2>
+  <!-- Testimonials carousel-->
+  <div
+    class="tns-carousel-wrapper tns-controls-outside-lg tns-nav-outside tns-nav-outside-flush col-lg-10 mx-auto px-0"
+  >
+    <div class="tns-carousel-inner" data-carousel-options='{"gutter": 24}'>
+      <!-- Testimonial slide-->
+      {{ range .testimonials}}
+      <div class="d-flex align-items-start mx-3 py-3">
+        <img
+          class="d-md-block d-none me-4 rounded-3"
+          src="{{.image}}"
+          width="306"
+          alt="Customer image"
+        />
+        <div class="card border-0 shadow-sm h-100">
+          <blockquote class="blockquote card-body">
+            <p>{{.content}}</p>
+            <footer class="d-flex align-items-center">
+              <img src="{{.logo}}" width="56" alt="Logo" />
+              <div class="ps-3">
+                <h6 class="fs-base mb-0">{{.company}}</h6>
+                <div class="text-muted fw-normal fs-sm">{{.name}}</div>
+              </div>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+
+<!-- How it works-->
+{{ with .Params.how_it_work}}
+<section class="container mb-5 pb-2 pb-lg-5">
+  <h2 class="h3 mb-4 pb-sm-2">{{.title}}</h2>
+  <!-- Grid card-->
+  <div class="row row-cols-lg-4 row-cols-sm-2 row-cols-1 gy-sm-5 gy-3">
+    <!-- Card item-->
+    <style>
+      .img-co:last-child svg {
+        display: none !important;
+      }
+    </style>
+    {{ range .card}}
+    <div class="col img-co">
+      <div class="card border-0 shadow-sm position-relative h-100">
+        <div class="card-body">
+          <div class="h2 mb-2 text-primary">{{.number}}</div>
+          <h3 class="h5 card-title mb-2">{{.title}}</h3>
+          <p class="card-text fs-sm">{{.content}}</p>
+        </div>
+        <!-- Arrow-->
+        <svg
+          class="position-absolute top-0 end-0 mt-n2 d-sm-block d-none"
+          xmlns="http://www.w3.org/2000/svg"
+          width="78"
+          height="30"
+          fill="none"
+          style="transform: translateY(-100%) translateX(70%)"
+        >
+          <path
+            d="M77.955 14.396c.128-2.86 0-4.67-.576-4.745s-1.279 1.607-2.11 4.378l-1.279 4.897-.563 2.683c-.612-1.434-1.352-2.81-2.212-4.113-2.718-4.072-6.226-7.569-10.321-10.288C54.205 2.687 46.332.186 38.233.008c-8.823-.165-17.491 2.305-24.874 7.087C6.581 11.549 2.118 17.395.66 22.191.033 24.057-.15 26.04.123 27.987c.243 1.367.627 2.037.755 2.012.396 0-.396-3.025 1.522-7.264s6.394-9.339 12.789-13.123c6.905-4.018 14.838-5.974 22.841-5.631 3.811.182 7.574.924 11.164 2.202 7.323 2.623 13.717 7.296 18.403 13.452 1.061 1.417 1.816 2.531 2.404 3.417l-1.637-.278-5.295-1.012c-3.031-.569-4.988-.848-5.179-.392s1.419 1.544 4.335 2.759a47.66 47.66 0 0 0 5.269 1.772c1.023.278 2.097.544 3.21.772.588.127 1.1.228 1.765.342.541.152 1.109.184 1.663.094a3.86 3.86 0 0 0 1.547-.613 2.76 2.76 0 0 0 .934-1.265c.088-.252.156-.51.205-.772l.09-.595.23-1.544.384-2.949c.217-1.873.371-3.569.435-5.062"
+            fill="#fd5631"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    {{end}}
+  </div>
+</section>
+{{end}}
+
+<!-- FAQ-->
+{{with .Params.faq}}
+<section class="container">
+  <img class="rounded-3" src="{{.bg}}" alt="Cover" />
+  <div
+    class="col-md-10 mx-md-auto mx-3 mt-sm-0 mt-5 py-sm-5 py-4 px-0 rounded-3 bg-light shadow-sm"
+    style="transform: translateY(-100px)"
+  >
+    <div class="col-md-10 mx-md-auto mx-3 py-lg-4 px-0">
+      <h2 class="h3 mb-4 pb-lg-2 text-center">{{.title}}</h2>
+      <div class="accordion" id="accordionFAQ">
+        {{range .list}}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-1">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse-{{.number}}"
+              aria-expanded="false"
+              aria-controls="collapse-{{.number}}"
+            >
+              {{.q}}
+            </button>
+          </h2>
+          <div
+            class="accordion-collapse collapse"
+            aria-labelledby="heading-{{.number}}"
+            data-bs-parent="#accordionFAQ"
+            id="collapse-{{.number}}"
+          >
+            <div class="accordion-body">{{.a}}</div>
+          </div>
+        </div>
+        {{end}}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-6">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse-6"
+              aria-expanded="false"
+              aria-controls="collapse-6"
+            >
+              How long should I make my cover letter and/or resume?
+            </button>
+          </h2>
+          <div
+            class="accordion-collapse collapse"
+            aria-labelledby="heading-6"
+            data-bs-parent="#accordionFAQ"
+            id="collapse-6"
+          >
+            <div class="accordion-body">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius
+              iste voluptas ducimus! Sequi, expedita est. Accusamus, quaerat nul
+              Ex exercitationem iure voluptatum mollitia amet, corporis sit ab
+              temporibus et consectetur.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}
+<!---->
+{{end}}
