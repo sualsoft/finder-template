@@ -11,7 +11,7 @@ title = 'CITY GUIDE | WEBSITE'
 [outputs]
     home = [ "HTML", "JSON", "RSS"]
 
-
+[languages]
 [Languages.en]
 title = "My blog"
 languageName = "English"
